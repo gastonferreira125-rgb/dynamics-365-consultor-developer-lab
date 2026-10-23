@@ -1,0 +1,19 @@
+# Dynamics 365 labs: ignore credentials, build results, local tooling
+.env
+.env.*
+!.env.example
+*.secrets.json
+.vscode/settings.json
+.alpackages/
+*.app
+*.bak
+*.log
+bin/
+obj/
+node_modules/
+__pycache__/
+.venv/
+.vs/
+*.user
+.DS_Store
+Thumbs.db
