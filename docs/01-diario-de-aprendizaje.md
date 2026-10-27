@@ -69,3 +69,25 @@ var rows = VoucherDiagnostics.FindVoucher(company, voucher);
 Terminología EN/ES: breakpoint/punto de interrupción; current statement/próxima instrucción; step into/entrar al método; locals/variables locales; step over/ejecutar siguiente instrucción; method call/llamada a método.
 
 **Estado:** Debugger breakpoint confirmado; inspección de variables y F11 pendientes; sin ejecución X++ ni F&O real.
+
+
+## 27/10/2026 — Step Into confirmado en FindVoucher
+
+**Evidencia:** captura de Visual Studio con flecha amarilla en **línea 100** de `Program.cs`, dentro de `VoucherDiagnostics.FindVoucher(string company,string voucher)`, a la altura de la consulta LINQ (método `=> (...).ToList()`). El depurador muestra `company = "USMF"`. **Hito F11 / Step Into logrado**.
+
+**Consulta vista:**
+```csharp
+from header in DemoData.Headers
+join line in DemoData.Lines
+    on header.RecId equals line.GeneralJournalEntryId
+where header.Company == company && header.SubledgerVoucher == voucher
+orderby line.RecId
+select new VoucherRow(header.RecId, line.RecId, line.MainAccount,
+                      line.Department, line.CostCenter,
+                      line.AccountingCurrencyAmount)
+```
+`ToList()` ejecuta y materializa la consulta. Se explicó `from`/`join`/`where`/`orderby`/`select` y equivalencia a `SQL INNER JOIN` con filtro por sociedad y voucher. **Modelo didáctico:** `GeneralJournalEntry` (header RecId=1001) → dos líneas `GeneralJournalAccountEntry` (RecId 5001, 5002), relación `line.GeneralJournalEntryId = header.RecId`. En F&O real, campo de relación `GeneralJournalAccountEntry.GeneralJournalEntry`.
+
+**Próxima acción:** en pausa, **F10 — Step Over** una vez para ejecutar la consulta entera (método de una sola expresión) y regresar al código llamador, habitualmente `if (rows.Count == 0)`. Inspeccionar en Locals/hover `rows.Count = 2` y elementos [0] y [1] y sus atributos. Los valores son **esperados**, no observados todavía; esperar captura.
+
+Terminología de entrevista: **Step Into, Step Over, LINQ, materialize results, 1-to-many join, record identifier, debugger watch/locals**. No hubo ejecución contra F&O ni compilación de X++.
