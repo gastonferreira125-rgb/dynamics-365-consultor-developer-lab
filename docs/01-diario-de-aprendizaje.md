@@ -52,3 +52,20 @@ Las dimensiones **predeterminadas** y **fijas** se deben investigar por separado
 - El estudiante colocó breakpoint en `var rows = VoucherDiagnostics.FindVoucher(company, voucher);`, pero la captura solo demuestra ejecución completa (sin pausa de debugging). **Debugging pendiente**: usar `Debug > Start Debugging` / F5 sin Ctrl, verificar flecha amarilla y `Locals` (`company=USMF`, `voucher=VCH-2026-001`), luego F11 para entrar al método y analizar LINQ.
 
 **Siguiente objetivo técnico:** comprender y explicar la relación 1:N por `GeneralJournalAccountEntry.GeneralJournalEntry` a `GeneralJournalEntry.RecId`, filtrar por sociedad y aprender la diferencia entre **Start Without Debugging (Ctrl+F5)** y **Start Debugging (F5)**.
+
+
+## 27/10/2026 — Primer breakpoint de C# alcanzado en Visual Studio
+
+**Evidencia:** captura aportada por el estudiante muestra **flecha amarilla de ejecución** y la línea 26 resaltada:
+
+```csharp
+var rows = VoucherDiagnostics.FindVoucher(company, voucher);
+```
+
+**Logro confirmado:** la aplicación está **pausada en el depurador (Start Debugging / F5)**, a diferencia de la ejecución previa con Ctrl+F5. Esta línea todavía no ejecutó `FindVoucher`, por lo que `rows` aún no tiene el resultado.
+
+**Siguiente acción práctica:** pasar el mouse sobre `company` y `voucher` y verificar los valores esperados `USMF` y `VCH-2026-001`; luego **F11 — Step Into** una sola vez para entrar al método `VoucherDiagnostics.FindVoucher` y observar el LINQ JOIN `header.RecId equals line.GeneralJournalEntryId`. Al pulsar **F10 — Step Over** sobre la expresión que termina en `.ToList()`, la consulta materializa `List<VoucherRow>` y, al regresar, se podrá inspeccionar `rows.Count` y los movimientos contables. **No atribuir al estudiante esta segunda inspección hasta ver evidencia.**
+
+Terminología EN/ES: breakpoint/punto de interrupción; current statement/próxima instrucción; step into/entrar al método; locals/variables locales; step over/ejecutar siguiente instrucción; method call/llamada a método.
+
+**Estado:** Debugger breakpoint confirmado; inspección de variables y F11 pendientes; sin ejecución X++ ni F&O real.
