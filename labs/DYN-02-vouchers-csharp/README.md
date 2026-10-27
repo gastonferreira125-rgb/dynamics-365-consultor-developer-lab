@@ -49,3 +49,18 @@ El separador `--` después de la ruta envía los parámetros a **nuestro program
 - [Troubleshooting general journal entries](https://learn.microsoft.com/en-us/troubleshoot/dynamics-365/finance/business-performance-analytics/missing-journal-entries-err00004)
 
 **Evaluación:** correr el programa local y enviar captura de `Program.cs` más ventana de salida. Registrar luego en Trello lo que realmente se ejecutó.
+
+
+## Solución a error Git fatal en Visual Studio — URL con parámetros de seguimiento
+
+Si aparece `Git failed with a fatal error. ...?utm_source=chatgpt.com/info/refs not valid. is this a git repository?`, normalmente **la dirección copiada incluye parámetros de seguimiento** que rompen la URL usada por Git al consultar `info/refs`. No es un defecto del código C# ni hace falta instalar otra herramienta.
+
+**URL exacta para pegar en Visual Studio > Clone a repository** (sin query string):
+
+```text
+https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab.git
+```
+
+Borrar antes **todo** el contenido del campo `Repository location`, pegar esta dirección limpia y volver a pulsar **Clone**. Evitar copiar la URL directamente desde la barra de navegación si termina con `?utm_source=...` u otros parámetros. El sufijo `.git` es válido para clonar. El repositorio es público, por lo que no debería exigir credenciales solo para lectura. Una vez clonado, abrir `labs/DYN-02-vouchers-csharp/DynamicsVoucherLab.csproj`.
+
+**Evidencia:** alumno mostró captura con cadena `?utm_source=chatgpt.com/info/refs`, compatible con URL de clonación contaminada. **No se confirmó todavía que el nuevo intento haya terminado bien.**
