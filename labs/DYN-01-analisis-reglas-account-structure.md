@@ -37,3 +37,23 @@ Suponer MainAccount `610100`, BusinessUnit `001`, ItemGroup vacío.
 Referencias: [Account structures overview](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/configure-account-structures) y [Crear/activar estructuras](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/tasks/create-account-structures).
 
 **Pendiente de registrar:** interpretación y propuesta del estudiante, evidencias y cierre real.
+
+## Resolución del estudiante — 27/10/2026
+**Respuesta:** «En este caso, agregar esa combinación a la configuración».
+
+**Devolución del instructor:** técnicamente correcta SI Finanzas valida que Department 022 / CostCenter 009 debe estar permitido. Una edición posible sería pasar de `"";007..008` a `"";007..009` en la rama correspondiente, pero eso amplía la autorización a todas las cuentas y unidades de negocio cubiertas por la rama, no solo a la factura o a la cuenta 610100.
+
+**Lección técnica:** las account structures son árboles presentados como filas. Los nodos padres (ej., rango de MainAccount) pueden compartirse y modificar sus criterios afecta a varias filas. Para acotar a una cuenta, diseñar criterios específicos con precaución para no crear rutas que se superpongan; controlar uso por otras entidades legales y reglas avanzadas.
+
+**Procedimiento en sandbox autorizado:**
+1. Confirmar requerimiento y alcance (cuenta, departamentos, centros y sociedades) con Finanzas.
+2. General ledger > Chart of accounts > Structures > Configure account structures > Edit, para crear una versión borrador.
+3. Modificar el criterio aprobado, evitando solapamientos.
+4. Ejecutar Validate; comprobar superposiciones potenciales adicionales antes y durante Activate.
+5. Activar exclusivamente en sandbox; la activación sincroniza transacciones **no contabilizadas** y puede tardar según volumen.
+6. UAT: cuenta/departamento autorizados con 009 acepta; 007/008 siguen aceptados; 010 sigue rechazado; otra cuenta no adquiere permiso involuntariamente; revisar efecto en otras sociedades.
+7. Documentar cambio y aprobación antes de considerar producción.
+
+**Estado:** respuesta conceptual evaluada; **NO hubo edición, activación, contabilización ni prueba en F&O real**.
+
+**Fuentes:** [Overview account structures](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/configure-account-structures), [Create/activate/modify](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/tasks/create-account-structures) y [Configure ledgers](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/configure-ledger).
