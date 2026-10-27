@@ -109,3 +109,21 @@ Se comprueba la **cardinalidad 1:N (one-to-many relationship)** entre encabezado
 **Próxima práctica propuesta:** usar `Debug > Windows > Watch > Watch 1` con expresiones `rows.Count`, `rows[0].HeaderRecId` y `rows[1].HeaderRecId`; verificar que ambas líneas apuntan a 1001. Luego se podrá analizar `FindFixedDimensionMismatches()` y su segundo `join` contra reglas de dimensión ficticias. No marcar aún la práctica Watch como completada.
 
 **Inglés:** query result, list/collection, item, property, one-to-many relationship, primary key, foreign key, runtime inspection, materialization.
+
+
+## 27/10/2026 — Watch 1: 4 verificaciones confirmadas en Visual Studio
+
+**Evidencia:** captura del estudiante muestra F10 completado y ejecución detenida en `Program.cs` línea 27 `if (rows.Count == 0)`, con condición evaluada `false`. En la ventana Watch 1 aparecen las siguientes expresiones y valores comprobados:
+
+| Watch expression | Valor observado | Tipo |
+|---|---|---|
+| `rows[0].HeaderRecId` | `1001` | `long` |
+| `rows.Count` | `2` | `int` |
+| `rows[1].HeaderRecId` | `1001` | `long` |
+| `rows[0].Amount + rows[1].Amount` | `0` | `decimal` |
+
+**Hito:** ya no son expectativas: Watch muestra las cuatro comprobaciones reales del código C# local. La consulta LINQ produjo dos filas que apuntan al mismo encabezado; los importes se compensan. **Un voucher balanceado puede igualmente tener dimensiones financieras equivocadas.** No se ha conectado a un F&O real.
+
+**Próxima práctica (pendiente):** colocar un nuevo breakpoint en la invocación `var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches();` mediante Ctrl+F, F9; F5 para continuar desde la línea 27 y detenerse en esa segunda llamada; luego F11 Step Into. Explicar los dos `join` de LINQ: Header a AccountEntry por RecId, luego AccountEntry contra FixedRules usando clave compuesta `Company + MainAccount`; `where line.CostCenter != rule.FixedCostCenter` filtra discrepancias. Resultado esperado: USMF, voucher `VCH-2026-002`, CC registrado `009` vs Fixed esperado `008`. La regla de Fixed es ficticia y actual, sin valor como prueba histórica de F&O.
+
+**Inglés nuevo:** *watch expression*, *conditional branch*, *balanced voucher*, *composite join key*, *fixed dimension mismatch*, *historical configuration*.
