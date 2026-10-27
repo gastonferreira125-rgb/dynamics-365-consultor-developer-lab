@@ -47,3 +47,21 @@ Referencia oficial con capturas y datos de ejemplo:
 - X++ con Visual Studio requiere un entorno de desarrollador diferente; el trial común no sirve.
 
 [Trello DYN-01](https://trello.com/c/hVHlU4pU).
+
+
+## Segunda interacción — respuesta sobre proveedor vs cuenta contable (27/10/2026)
+El estudiante plantea revisar **ambas configuraciones** y **el origen de las dimensiones** antes de cambiar nada.
+
+**Valoración:** correcta. Para completar el diagnóstico, investigar también:
+1. Nombre de diario (**LedgerJournalName**) y encabezado (**LedgerJournalTable**).
+2. Dimensiones de la cuenta de línea (proveedor) y valores que completan segmentos vacíos.
+3. Cuenta de contrapartida (tipo Ledger): valores heredados de la cuenta de línea, y de la cuenta principal cuando haya vacíos.
+4. Dimensiones fijas a nivel de cuenta principal/entidad legal: pueden sobrescribir el valor del asiento **durante la contabilización**, incluso si en pantalla aparece otro.
+5. Account structure y advanced rules: comprobar que la combinación final sea válida.
+6. Extensiones o integraciones, si es relevante.
+
+**Documento técnico oficial:** https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/dimensions-default-values
+
+**Métodos X++ de referencia mencionados por Microsoft:** `LedgerJournalEngine.accountModified()` y `LedgerJournalEngine.offsetAccountModified()` para dimension defaulting en diarios. No se ha abierto AOT ni ejecutado código.
+
+**Siguiente desafío:** encabezado Department=022; proveedor Department=023 y CostCenter=009; contrapartida Ledger 606300 con CostCenter Fixed=008. Determinar valores visibles en línea y los del asiento final, distinguiendo fuente de valores y efecto de Fixed. Es un caso pedagógico con reglas de dimensión inventadas; verificar vigencia de account structures antes de considerar un resultado real.
