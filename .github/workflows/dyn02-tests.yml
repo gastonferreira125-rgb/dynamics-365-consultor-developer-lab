@@ -1,0 +1,23 @@
+name: DYN-02 - SQL / Python Lab Tests
+
+on:
+  push:
+    paths:
+      - 'labs/DYN-02-vouchers-cloud/**'
+      - '.github/workflows/dyn02-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check Python available
+        run: python3 --version
+      - name: Run demo
+        run: python3 labs/DYN-02-vouchers-cloud/lab.py
+      - name: Run 5 unit tests
+        run: python3 -m unittest discover -s labs/DYN-02-vouchers-cloud -v
