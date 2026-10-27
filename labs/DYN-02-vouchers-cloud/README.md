@@ -6,7 +6,21 @@
 
 Aprender a unir `GeneralJournalEntry` con `GeneralJournalAccountEntry`, filtrar por empresa y voucher, comprobar que los movimientos cuadren y detectar una discrepancia de `Fixed dimension`. También ejercitar términos profesionales en inglés.
 
-## Ejecutar sin instalar nada (GitHub Codespaces)
+## Opción recomendada si ya tenés Visual Studio instalado (sin Codespaces)
+
+**No hace falta Codespaces ni Docker.** Este laboratorio es solo un script de Python con SQLite (incluido en Python); no incluye servidor F&O ni SQL Server. Si Python 3 ya está instalado, abrí la carpeta clonada/descargada del repositorio en Visual Studio, Visual Studio Code o una terminal Windows y ejecutá desde la raíz:
+
+```powershell
+py -3 labs/DYN-02-vouchers-cloud/lab.py
+py -3 labs/DYN-02-vouchers-cloud/lab.py --company USMF --voucher VCH-2026-002
+py -3 -m unittest discover -s labs/DYN-02-vouchers-cloud -v
+```
+
+En sistemas donde `py` no esté disponible, probá `python` o `python3`, si el intérprete existe. En **Visual Studio** (no Visual Studio Code), para trabajar con archivos Python en el IDE pueden requerirse la carga de trabajo *Python development* y el intérprete, por separado; no instalar estas herramientas si no son necesarias. Como alternativa, ejecutar desde la terminal Windows abierta en la carpeta del proyecto. Si Python **no** está instalado, no lo presupongas ni descargues software sin consentimiento: hay alternativa de usar C# en su instalación actual.
+
+**Distinción:** este ejercicio simula tablas con SQLite. Para ejecutar **X++ verdadero**, Microsoft documenta *Unified developer experience*: Visual Studio puede editar/compilar en la PC y ejecutar/desplegar en un runtime F&O cloud, pero requiere herramientas de desarrollo, metadatos y un entorno F&O autorizado; Visual Studio por sí solo no basta. https://learn.microsoft.com/en-us/power-platform/developer/unified-experience/finance-operations-debug
+
+## Alternativa: ejecutar en navegador (GitHub Codespaces)
 
 1. Abrir el [repositorio principal](https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab).
 2. Presionar **Code > Codespaces > Create codespace on main**. Seleccionar la máquina de menor tamaño si ofrece elección. El equipo ejecuta en **la nube**, no en tu PC.
