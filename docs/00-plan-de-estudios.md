@@ -19,3 +19,14 @@ Objetivo: desempeñarse como consultor técnico-funcional capaz de configurar, d
 Los programas MB-310, MB-500, MB-800, MB-820 son **referencias de objetivos**, no certificaciones obtenidas.
 
 Ciclo: observar pantalla → realizar acción → comprobar resultado → entender tablas/código → documentar evidencia.
+
+
+## Método obligatorio de cada clase — actualizado 27/10/2026
+1. **Respuesta directa primero:** explicar el resultado correcto del caso antes de pedir nuevos retos si el alumno no entendió.
+2. **Conceptos bilingües:** nombrar cada término relevante español + **English UI term** y agregar una frase práctica de entrevista en inglés.
+3. **Dónde se configura:** rutas de navegación exactas en la UI inglesa de F&O/BC (con fuente oficial y cautela ante diferencias de versiones).
+4. **Laboratorio visual o sandbox:** explicar con captura real y tarea tangible; no sustituir la práctica por teoría extensa.
+5. **Origen del dato y efectos:** distinguir valor en línea, regla de defaulting/fixed, resultado de posting y validación de account structures.
+6. **Registro verídico:** guardar resultado del estudiante, dudas, enlaces, evidencia y próxima pantalla en GitHub y Trello. No declarar ejecuciones reales sin entorno.
+
+Primer documento bilingüe: [DYN-01 — Default vs Fixed dimensions](../labs/DYN-01-dimensiones-origen-fixed-bilingue.md).
