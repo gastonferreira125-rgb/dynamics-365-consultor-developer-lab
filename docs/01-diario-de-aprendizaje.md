@@ -163,3 +163,24 @@ select new Mismatch(header.Company, header.SubledgerVoucher,
 **Resolución instruida, pendiente de confirmar:** pulsar **F10 — Step Over** una vez para terminar la expresión `(...).ToList()` y regresar al caller tras la asignación; inspeccionar Watch allí. Resultado esperado `Count=1`, sociedad USMF, voucher VCH-2026-002, diferencia CostCenter 009 vs Fixed 008. No afirmar que se verificaron todavía.
 
 **Conceptos EN:** variable scope, local variable, caller, callee, stack frame, Watch window, Step Over.
+
+
+## 27/10/2026 — DYN-02, validación de inconsistencias de dimensiones finalizada
+
+**Evidencia de ejecución local en Visual Studio:** última captura del usuario, con debugger pausado en `Program.cs` línea 48 (`foreach (var issue in mismatches)`) y ventana **Watch 1** mostrando, ya dentro del `Main`, los valores **confirmados**:
+
+| Variable verificada | Valor |
+|---|---|
+| `mismatches.Count` | `1` |
+| `mismatches[0].Company` | `"USMF"` |
+| `mismatches[0].Voucher` | `"VCH-2026-002"` |
+| `mismatches[0].Actual` | `"009"` |
+| `mismatches[0].Expected` | `"008"` |
+
+**Estado:** se completaron las prácticas de local C#: compilación, ejecución, F5 con breakpoint, F11 Step Into, F10 Step Over, `Watch 1` con resultados, consultas LINQ con 1 y 2 JOINs, clave compuesta (company/main account), comparación de dimensiones y resolución del error de scope `CS0103`. Los resultados corresponden a **datos simulados, no a un entorno real de Microsoft Dynamics 365 Finance**. Las cinco verificaciones del proyecto también pasaron en CI GitHub Actions y un voucher se confirmó balanceado.
+
+**Aprendizaje funcional:** un voucher con débitos/créditos equilibrados puede tener dimensiones erróneas; en F&O real hay que verificar sociedad, cuenta, versión histórica de la configuración Fixed y valores contables en el sistema antes de sugerir ajustes.
+
+**Resultado laboral:** evidencia preparada para un post bilingüe LinkedIn con capturas auténticas de Visual Studio. Posicionamiento: consultor funcional ERP con aprendizaje técnico en C#/.NET/LINQ y troubleshooting; no afirmar desarrollo X++ ni conexión live a F&O.
+
+**Siguiente módulo técnico:** código C# para consultar datos desde una fuente externa/autorizada y aprender a resolver LedgerDimension; X++ únicamente cuando haya developer environment F&O.
