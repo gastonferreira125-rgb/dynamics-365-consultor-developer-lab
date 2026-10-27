@@ -91,3 +91,21 @@ select new VoucherRow(header.RecId, line.RecId, line.MainAccount,
 **Próxima acción:** en pausa, **F10 — Step Over** una vez para ejecutar la consulta entera (método de una sola expresión) y regresar al código llamador, habitualmente `if (rows.Count == 0)`. Inspeccionar en Locals/hover `rows.Count = 2` y elementos [0] y [1] y sus atributos. Los valores son **esperados**, no observados todavía; esperar captura.
 
 Terminología de entrevista: **Step Into, Step Over, LINQ, materialize results, 1-to-many join, record identifier, debugger watch/locals**. No hubo ejecución contra F&O ni compilación de X++.
+
+
+## 27/10/2026 — Se materializó y se inspeccionó la lista devuelta por LINQ
+
+**Evidencia:** captura de Visual Studio, durante depuración, con el tooltip "FindVoucher returned" y **Count=2** tras usar Step Over. El estudiante expandió la colección y se ven dos elementos:
+
+| Objeto | HeaderRecId | LineRecId | MainAccount | Department | CostCenter |
+|---|---|---|---|---|---|
+| `rows[0]` | `1001` | `5001` | `606300` | `022` | `008` |
+| `rows[1]` | `1001` | `5002` | `201100` | `022` | `009` |
+
+Se comprueba la **cardinalidad 1:N (one-to-many relationship)** entre encabezado (`GeneralJournalEntry`) y movimientos (`GeneralJournalAccountEntry`) mediante `RecId`, representada en un `LINQ join`. `ToList()` materializó la consulta y devolvió `List<VoucherRow>`. Este resultado es de **datos ficticios en memoria** (C#); no es salida de un entorno real de F&O.
+
+**Hitos confirmados:** clonación, proyecto abierto, compilación, ejecución local, breakpoint, F11 Step Into, F10 Step Over, inspección de `List<VoucherRow>` y Count=2. El panel mostrado incluye además herramientas del debugger como Call Stack/Autos.
+
+**Próxima práctica propuesta:** usar `Debug > Windows > Watch > Watch 1` con expresiones `rows.Count`, `rows[0].HeaderRecId` y `rows[1].HeaderRecId`; verificar que ambas líneas apuntan a 1001. Luego se podrá analizar `FindFixedDimensionMismatches()` y su segundo `join` contra reglas de dimensión ficticias. No marcar aún la práctica Watch como completada.
+
+**Inglés:** query result, list/collection, item, property, one-to-many relationship, primary key, foreign key, runtime inspection, materialization.
