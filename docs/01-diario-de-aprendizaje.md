@@ -152,3 +152,14 @@ select new Mismatch(header.Company, header.SubledgerVoucher,
 **Siguiente instrucción:** pulsar F10 (**Step Over**) una vez, normalmente retorna al llamador antes de la instrucción siguiente, y examinar en `Watch 1`: `mismatches.Count` (1), `mismatches[0].Company` ("USMF"), `mismatches[0].Voucher` ("VCH-2026-002"), `mismatches[0].MainAccount` ("606300"), `mismatches[0].Actual` ("009") y `mismatches[0].Expected` ("008"). Valores **esperados**, todavía sin evidencia de salida observada.
 
 **Advertencia:** `FixedRules` es una estructura inventada para este lab en memoria. Un conflicto con las reglas ficticias actuales no demuestra un error histórico contable en Dynamics real. Nada de X++ ni F&O real ejecutado.
+
+
+## 27/10/2026 — Depuración de alcance de variable (Variable Scope)
+
+**Evidencia:** screenshot durante depuración en `FindFixedDimensionMismatches()` línea 110, con Watch 1 mostrando `error CS0103: The name 'mismatches' does not exist in the current context` para `mismatches.Count`, `mismatches[0].Company`, `mismatches[0].Voucher`, `mismatches[0].Actual`, `mismatches[0].Expected`.
+
+**Diagnóstico preciso:** la ejecución está en el método **callee** `FindFixedDimensionMismatches()`; la variable local `mismatches` pertenece al **caller** (bloque principal o *top-level statements* de `Program.cs`), donde se declara `var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches();`. Por lo tanto, no está disponible en el ámbito (*scope*) del método actual. **No es error de compilación ni del JOIN.**
+
+**Resolución instruida, pendiente de confirmar:** pulsar **F10 — Step Over** una vez para terminar la expresión `(...).ToList()` y regresar al caller tras la asignación; inspeccionar Watch allí. Resultado esperado `Count=1`, sociedad USMF, voucher VCH-2026-002, diferencia CostCenter 009 vs Fixed 008. No afirmar que se verificaron todavía.
+
+**Conceptos EN:** variable scope, local variable, caller, callee, stack frame, Watch window, Step Over.
