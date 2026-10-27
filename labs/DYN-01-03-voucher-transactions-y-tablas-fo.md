@@ -93,3 +93,55 @@ Ejemplo didáctico: un sistema real debe filtrar también entidad/ledger/fecha y
 
 ## Estado de avance
 Documentación y práctica **preparadas**, pendiente respuesta del alumno y operación real en ambiente cloud. No marcar como completado.
+
+
+## Resolución del desafío de troubleshooting — 27/10/2026 (ES/EN)
+
+**Pregunta:** el gasto de la cuenta principal \`606300\` aparece en **Voucher transactions** con \`CostCenter=009\`, pero esperábamos \`008\` porque supuestamente está configurada una dimensión fija.
+
+**Respuesta (primera comprobación):** verificar el parámetro **Fixed value** del \`CostCenter\` para la **Main account 606300** en la **Legal entity** donde se hizo el asiento. No modificar el proveedor, la estructura ni el diario para intentar corregir un hecho que no se ha diagnosticado.
+
+### Menús exactos
+
+1. \`General ledger > Chart of accounts > Accounts > Main accounts\`.
+2. Abrir \`606300\`, sección **Legal entity overrides**, seleccionar la sociedad del comprobante (p. ej. \`USMF\`) y pulsar **Default dimensions**.
+3. Comprobar si \`CostCenter\` está en **Fixed value = 008** o **Not fixed**. No asumir que ver un valor \`008\` significa que su estado sea **Fixed**.
+4. Para inspeccionar el asiento definitivo: \`General ledger > Inquiries and reports > Voucher transactions\`. Filtrar por sociedad, voucher, fecha y cuenta; abrir **Transaction origin** / **Original document** si es necesario.
+
+### Interpretación
+
+| Hallazgo real | Qué significa / siguiente acción |
+|---|---|
+| \`Not fixed\` o ningún override Fixed para esa sociedad | \`009\` podría ser el valor resultante de la línea, proveedor o diario; aclarar con Finanzas si la política contable realmente exige \`008\`. No cambiar sin autorización. |
+| \`Fixed value = 008\` vigente al contabilizar | Bajo el flujo estándar de diarios financieros, el asiento de esa cuenta debería registrar \`008\`. Si muestra \`009\`, verificar que sea el **posted accounting entry** (y no la línea del diario), la cuenta/sociedad correctas y el alcance del voucher. |
+| Fixed fue activado/cambiado **después** de contabilizar | La configuración actual no demuestra la configuración histórica; solicitar evidencias de cambios y no asumir que el asiento ya registrado cambió. |
+| Configuración correcta, pero resultado discrepante | Investigar origen real de la transacción, reversas/reclasificaciones, **derived dimensions**, reglas avanzadas y personalizaciones/integraciones. Escalar con evidencia técnica. |
+
+**Prueba segura en sandbox autorizado:** con la misma cuenta y sociedad, crear transacción **nueva** y comparar: (1) valor \`009\` en línea; (2) \`Validate\` y \`Simulate posting\` si el tipo de diario lo permite; (3) si procede y con autorización en test, ejecutar **Post** y confirmar \`008\` en Voucher transactions. Repetir prueba negativa y regresión para otras cuentas afectadas. Nunca actualizar asientos contabilizados mediante SQL.
+
+**Cautela:** una estructura contable puede invalidar el resultado incluso con Fixed=008. El diagnóstico debe verificar **Account structure** y **Advanced rules**, pero solo después de comprobar el origen del valor incorrecto.
+
+### Inglés para entrevista
+
+> First, I verify whether the main account has a fixed financial dimension configured for the correct legal entity. Then I compare the journal line with the posted voucher. Fixed dimensions override entered values at posting time, so if the posted entry still shows a different cost center, I investigate the transaction origin, posting date, and any customizations before proposing a change.
+
+### Conceptos nuevos
+
+- **Main account** — cuenta principal
+- **Legal entity override** — configuración específica por sociedad
+- **Fixed value** — valor fijo; reemplaza durante posting
+- **Not fixed** — valor no fijo; puede heredarse o cambiarse
+- **Posting date** — fecha de contabilización
+- **Journal line** — línea del diario, puede mostrar \`009\`
+- **Posted accounting entry** — apunte contable definitivo, debería reflejar \`008\` si Fixed aplica
+- **Transaction origin / Original document** — navegación al origen del asiento
+- **Regression testing** — comprobar que el cambio no afecta procesos existentes
+
+**Estado:** respuesta documentada con fuentes, **NO prueba ejecutada** porque seguimos sin sandbox F&O.
+
+### Referencias oficiales
+
+- [Default financial dimensions on financial journals](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/dimensions-default-values)
+- [Financial dimensions and posting](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/Default-dimensions)
+- [Default financial dimension values are incorrect](https://learn.microsoft.com/en-us/troubleshoot/dynamics-365/finance/general-ledger/incorrect-default-dimension-values)
+- [View journal entries or transactions](https://learn.microsoft.com/en-us/dynamics365/finance/general-ledger/tasks/view-journal-entries-or-transactions)
