@@ -1,0 +1,29 @@
+name: DYN-02 - C# LINQ voucher checks
+
+on:
+  push:
+    paths:
+      - 'labs/DYN-02-vouchers-csharp/**'
+      - '.github/workflows/dyn02-csharp.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build C# project
+        run: dotnet build labs/DYN-02-vouchers-csharp/DynamicsVoucherLab.csproj --configuration Release
+      - name: Execute voucher 001
+        run: dotnet run --project labs/DYN-02-vouchers-csharp --configuration Release --no-build -- --voucher VCH-2026-001
+      - name: Execute voucher 002
+        run: dotnet run --project labs/DYN-02-vouchers-csharp --configuration Release --no-build -- --voucher VCH-2026-002
+      - name: Execute checks
+        run: dotnet run --project labs/DYN-02-vouchers-csharp --configuration Release --no-build -- --test
