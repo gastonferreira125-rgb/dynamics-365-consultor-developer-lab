@@ -127,3 +127,28 @@ Se comprueba la **cardinalidad 1:N (one-to-many relationship)** entre encabezado
 **Próxima práctica (pendiente):** colocar un nuevo breakpoint en la invocación `var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches();` mediante Ctrl+F, F9; F5 para continuar desde la línea 27 y detenerse en esa segunda llamada; luego F11 Step Into. Explicar los dos `join` de LINQ: Header a AccountEntry por RecId, luego AccountEntry contra FixedRules usando clave compuesta `Company + MainAccount`; `where line.CostCenter != rule.FixedCostCenter` filtra discrepancias. Resultado esperado: USMF, voucher `VCH-2026-002`, CC registrado `009` vs Fixed esperado `008`. La regla de Fixed es ficticia y actual, sin valor como prueba histórica de F&O.
 
 **Inglés nuevo:** *watch expression*, *conditional branch*, *balanced voucher*, *composite join key*, *fixed dimension mismatch*, *historical configuration*.
+
+
+## 27/10/2026 — Step Into confirmado en FindFixedDimensionMismatches()
+
+**Evidencia:** captura del alumno en Visual Studio; la flecha amarilla está en la **línea 110** de `Program.cs`, dentro de `VoucherDiagnostics.FindFixedDimensionMismatches()`. Se ha ejecutado **F11 — Step Into** desde la invocación del método. **Todavía no se ha ejecutado la expresión `.ToList()` ni observado el resultado del segundo JOIN en Watch.**
+
+**Consulta que el alumno tiene abierta:**
+```csharp
+from header in DemoData.Headers
+join line in DemoData.Lines on header.RecId equals line.GeneralJournalEntryId
+join rule in DemoData.FixedRules
+    on new { header.Company, line.MainAccount }
+    equals new { rule.Company, rule.MainAccount }
+where line.CostCenter != rule.FixedCostCenter
+orderby header.Company, header.SubledgerVoucher
+select new Mismatch(header.Company, header.SubledgerVoucher,
+                    line.MainAccount, line.CostCenter,
+                    rule.FixedCostCenter)
+```
+
+**Explicación bilingüe:** primer join = `Header→AccountEntry` por identificador interno, segundo join = `AccountEntry→Fixed dimension rules` por **composite join key / clave de unión compuesta** de sociedad + cuenta. `where ... != ...` = filtro de diferencias. `new { ... }` en C# representa un **anonymous type / tipo anónimo**. `ToList()` = **query materialization / materialización de resultados**.
+
+**Siguiente instrucción:** pulsar F10 (**Step Over**) una vez, normalmente retorna al llamador antes de la instrucción siguiente, y examinar en `Watch 1`: `mismatches.Count` (1), `mismatches[0].Company` ("USMF"), `mismatches[0].Voucher` ("VCH-2026-002"), `mismatches[0].MainAccount` ("606300"), `mismatches[0].Actual` ("009") y `mismatches[0].Expected` ("008"). Valores **esperados**, todavía sin evidencia de salida observada.
+
+**Advertencia:** `FixedRules` es una estructura inventada para este lab en memoria. Un conflicto con las reglas ficticias actuales no demuestra un error histórico contable en Dynamics real. Nada de X++ ni F&O real ejecutado.
