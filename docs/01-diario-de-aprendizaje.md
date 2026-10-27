@@ -26,3 +26,13 @@ Las dimensiones **predeterminadas** y **fijas** se deben investigar por separado
 - [ ] Continuar con objetos de datos y arquitectura AOT.
 
 [Trello DYN-01](https://trello.com/c/hVHlU4pU)
+
+
+## 27/10/2026 — DYN-01: diagnóstico del origen de dimensiones en Invoice Journal
+**Respuesta del estudiante:** «Hay que revisar ambas configuraciones, proveedor y cuenta para ver dónde está el conflicto, de dónde vienen los datos».
+
+**Devolución:** correcto como punto de partida; ampliar la trazabilidad al nombre de diario, encabezado del diario, cuenta de la línea, cuenta de contrapartida, dimensiones predeterminadas y fijas, estructuras contables, reglas derivadas y posibles personalizaciones.
+
+**Fundamento Microsoft Learn:** el nombre del diario predetermina el encabezado; la cuenta de línea hereda valores del encabezado y rellena blancos desde el proveedor u otro maestro; la cuenta de contrapartida toma primero dimensiones de la línea y completa valores faltantes; las dimensiones *Fixed* en las cuentas principales se imponen al contabilizar. Referencia: https://learn.microsoft.com/es-es/dynamics365/finance/general-ledger/dimensions-default-values .
+
+**Estado:** interpretación conceptual aprobada; sin transacción real ni pruebas realizadas. Siguiente ejercicio: contraste de dimensiones visibles en línea vs. dimensiones del asiento con *Fixed*.
