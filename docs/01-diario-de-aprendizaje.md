@@ -242,3 +242,12 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 **Comparación main...fix/company-scoped-mismatches:** 1 solo archivo modificado (labs/DYN-02-vouchers-csharp/Program.cs, +19/-6), 1 commit de corrección y 18 commits en main que la rama aún no incorpora. Esta divergencia no afecta el éxito del Push.
 **Pendiente:** alumno creará su primer Pull Request desde Create in browser; verificar base=main y compare=fix/company-scoped-mismatches, título fix: filter voucher discrepancies by legal entity. Revisar PR y checks antes de Merge.
 **Inglés:** push, feature branch, compare changes, base/head, pull request, CI checks, merge.
+
+## 02/11/2026 — Primer Pull Request #1 creado y revisado
+**Evidencia:** captura del alumno en GitHub y verificación del PR por el conector. PR: https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab/pull/1
+- Título: fix: filter voucher discrepancies by legal entity.
+- Base `main`, head `fix/company-scoped-mismatches`, un commit (`b1e1ccf5`), un archivo cambiado: `labs/DYN-02-vouchers-csharp/Program.cs` (+19/-6).
+- GitHub reporta PR **open**, `mergeable=true` y `mergeable_state=clean`, sin conflictos. Checks exitosos; CI de la rama: https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab/actions/runs/41460118496
+- Revisión del diff: caller pasa `company`; el método recibe `string company`; el filtro LINQ exige `header.Company == company`; pruebas DEMF y USMF añadidas; mensajes 7/7.
+- **Estado:** PR apto para integración, **NO fusionado todavía** al momento de la verificación. Se indicó al alumno Merge pull request > Confirm merge, y después cambiar a `main` en Visual Studio y hacer Pull.
+- El laboratorio sigue siendo C# con datos sintéticos: no se ejecutó un ERP real ni X++.
