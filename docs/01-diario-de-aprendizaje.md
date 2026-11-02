@@ -272,3 +272,10 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 **Diagnóstico:** el checkout realizado fue a un commit antiguo y NO al nombre de la rama principal. Esto explica que el programa local siga mostrando 5/5 pruebas, mientras en GitHub remoto `main` ya tiene 7/7. No afirmar que se haya sincronizado hasta nueva captura.
 **Acción guiada por GUI Visual Studio:** clic derecho sobre la rama `main` en Git Repository > Checkout; verificar que el indicador deje de decir Detached, luego menú Git > Pull. Ejecutar nuevamente `dotnet run -- --test` (el comando dotnet sí funciona). Evitar intentar `git` en esta terminal e instalar Git innecesariamente: Visual Studio ofrece GUI Git funcional.
 **Pendiente:** verificar que la rama main se ha seleccionado, que Pull fue exitoso y que el test local muestra 7/7. No alterar historial con Reset ni Revert.
+
+
+## 02/11/2026 — Sincronización local de main validada con siete pruebas
+**Evidencia del estudiante:** captura Developer PowerShell desde `labs/DYN-02-vouchers-csharp` con ejecución de `dotnet run -- --test`: se muestran las siete comprobaciones PASS y la línea **7/7 checks passed. Not an F&O integration test.** La captura previa confirma `main` seleccionada en la interfaz Visual Studio.
+**Interpretación:** la copia local ya ejecuta la versión de siete pruebas incorporada mediante PR #1 a main. La parte superior de la consola mantiene un error previo `git no se reconoce` por falta de git CLI en PATH, pero no afecta la ejecución .NET ni el Git GUI de Visual Studio.
+**Estado:** la actualización de código local es efectiva, LAB-TECH-02 completamente cerrado y verificado; no declarar verificado el paso exacto `Git > Pull` solamente por la salida, aunque el resultado corresponde a la versión ya fusionada en main.
+**Próxima etapa:** LAB-TECH-03 integraciones OData / HTTP GET / JSON en C# sin ERP instalado. Se utilizará una API de prueba OData v4 pública, claramente separada de F&O real; luego vincular con Data Entities, OData /data, dataAreaId, OAuth2 de F&O.
