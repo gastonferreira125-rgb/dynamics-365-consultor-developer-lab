@@ -202,3 +202,21 @@ Captura del alumno desde Developer PowerShell, después de corregir el filtro en
 **Evidencia observada:** `Legal entity: USMF | Voucher: VCH-2026-002`; Header RecId `1002`; líneas `5003` (cuenta 606300, Department 022, CostCenter 009, importe +750.00) y `5004` (cuenta 201100, Department 022, CostCenter 009, -750.00); `Reconciliation / Balance: 0.00 (BALANCED)`; reporte `USMF / VCH-2026-002 | Main account 606300 | Posted CC 009 vs. currently configured Fixed CC 008`.
 **Estado verificado:** ambas pruebas funcionales DEMF y USMF PASARON según capturas. El alumno corrigió el filtrado por sociedad en su copia LOCAL de `Program.cs`. **Aún pendientes:** añadir 2 controles automatizados al método `LabTests.Run()` (pasar de 5 a 7 checks), ejecutar `dotnet run -- --test`, revisar `Git Changes`, crear commit y push de la modificación local a GitHub. La versión remota del código no ha sido modificada por esta corrección; tampoco hubo acceso a un entorno real de Dynamics F&O.
 **Inglés:** regression test, company scoping, root cause, fixed dimension mismatch, expected result, actual result.
+
+
+## 02/11/2026 — LAB-TECH-02: pruebas de regresión 7/7 confirmadas en Visual Studio
+
+**Evidencia:** captura real del estudiante ejecutando `dotnet run -- --test` en Developer PowerShell, desde `labs/DYN-02-vouchers-csharp`. La consola informa **Running seven checks on SIMULATED data** y **7/7 checks passed. Not an F&O integration test.** La salida de los siete `PASS` aparece dos veces en el historial de la consola.
+
+Verificaciones observadas:
+1. Header JOIN returns two accounting entries.
+2. Expense account on voucher 001 has fixed cost center 008.
+3. Filter by legal entity prevents cross-company voucher confusion.
+4. All three fictitious vouchers balance.
+5. A discrepancy is detected for voucher 002.
+6. DEMF must not show USMF discrepancies.
+7. USMF must retain its own discrepancy.
+
+**Estado del aprendizaje:** `Reproduce → Diagnose → Fix → Regression Test` completado en C# local. Las pruebas previas DEMF y USMF también se confirmaron por capturas. Las pruebas usan datos **simulados**; no se accedió a F&O ni se ejecutó X++.
+
+**PENDIENTE:** publicar la modificación `Program.cs` realizada por el estudiante en su copia local. Por ahora, el repositorio remoto contiene material de enseñanza y el código original; el nuevo filtro de empresa aún no fue confirmado en GitHub. Ruta recomendada para aprender Git: crear una rama `fix/company-scoped-mismatches`, revisar `Git Changes`, registrar un commit solo con el código pertinente, **Push** de la rama y abrir un Pull Request contra `main`. Como `main` remoto ha recibido cambios en documentos desde la clonación, evitar copiar/pegar o sobrescribir archivos ajenos y preferir un PR.
