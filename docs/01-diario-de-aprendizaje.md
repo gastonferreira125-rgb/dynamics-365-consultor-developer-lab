@@ -251,3 +251,12 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 - Revisión del diff: caller pasa `company`; el método recibe `string company`; el filtro LINQ exige `header.Company == company`; pruebas DEMF y USMF añadidas; mensajes 7/7.
 - **Estado:** PR apto para integración, **NO fusionado todavía** al momento de la verificación. Se indicó al alumno Merge pull request > Confirm merge, y después cambiar a `main` en Visual Studio y hacer Pull.
 - El laboratorio sigue siendo C# con datos sintéticos: no se ejecutó un ERP real ni X++.
+
+## 02/11/2026 — LAB-TECH-02 terminado: PR #1 integrado en main
+**Evidencia del alumno:** captura de GitHub con estado `Merged` y mensaje `Pull request successfully merged and closed` en PR #1.
+**Verificación directa por integración GitHub:** https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab/pull/1 indica `state=closed`, `merged=true`, `merged_at=2026-11-02T14:23:11Z`, merge commit `4fe1e4a13338366d06e10dd0f4d7ca7912a98cc1`.
+**Código main verificado:** `labs/DYN-02-vouchers-csharp/Program.cs` ya contiene el método `FindFixedDimensionMismatches(string company)`, el filtro `header.Company == company`, dos nuevos controles DEMF y USMF y mensaje `7/7 checks passed`.
+**Hitos demostrados por capturas:** reproducción del bug, inspección con debugger, corrección por legal entity, dos pruebas funcionales, 7/7 regression checks locales, Git branch, commit, push, PR #1, CI exitoso y merge.
+**Nota de alcance:** aplicación C# con datos ficticios inspirada en Finance; no hay prueba sobre Dynamics real ni desarrollo X++ ejecutado.
+**Siguiente paso local pendiente:** cambiar a la rama `main` en Visual Studio y hacer `Git > Pull` para sincronizar con remoto. Luego ejecutar `dotnet run -- --test` para volver a confirmar el estado actualizado de main. No marcar sincronización local hasta evidencia.
+**Términos EN:** merged pull request, main branch, sync, pull, regression testing, CI/CD, code review.
