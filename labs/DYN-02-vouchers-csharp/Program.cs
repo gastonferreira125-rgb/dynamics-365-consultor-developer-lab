@@ -44,7 +44,7 @@ else
 }
 
 Console.WriteLine("\n=== SIMULATED FIXED DIMENSION MISMATCHES ===");
-var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches();
+var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches(company);
 foreach (var issue in mismatches)
 {
     Console.WriteLine($"{issue.Company} / {issue.Voucher} | " +
@@ -106,13 +106,13 @@ static class VoucherDiagnostics
                                line.Department, line.CostCenter,
                                line.AccountingCurrencyAmount)).ToList();
 
-    public static List<Mismatch> FindFixedDimensionMismatches() =>
+    public static List<Mismatch> FindFixedDimensionMismatches(string company) =>
         (from header in DemoData.Headers
          join line in DemoData.Lines on header.RecId equals line.GeneralJournalEntryId
          join rule in DemoData.FixedRules
              on new { header.Company, line.MainAccount }
              equals new { rule.Company, rule.MainAccount }
-         where line.CostCenter != rule.FixedCostCenter
+         where header.Company == company && line.CostCenter != rule.FixedCostCenter
          orderby header.Company, header.SubledgerVoucher
          select new Mismatch(header.Company, header.SubledgerVoucher, line.MainAccount,
                              line.CostCenter, rule.FixedCostCenter)).ToList();
@@ -128,7 +128,7 @@ static class LabTests
 
     public static void Run()
     {
-        Console.WriteLine("Running five checks on SIMULATED data...");
+        Console.WriteLine("Running seven checks on SIMULATED data...");
         var first = VoucherDiagnostics.FindVoucher("USMF", "VCH-2026-001");
         Check(first.Count == 2, "Header JOIN returns two accounting entries");
 
@@ -145,10 +145,23 @@ static class LabTests
                   .Sum(row => row.Amount) == 0m),
               "All three fictitious vouchers balance");
 
-        var mismatches = VoucherDiagnostics.FindFixedDimensionMismatches();
+
+        var mismatches =
+            VoucherDiagnostics.FindFixedDimensionMismatches("USMF");
         Check(mismatches.Count == 1 && mismatches[0].Voucher == "VCH-2026-002" &&
               mismatches[0].Actual == "009" && mismatches[0].Expected == "008",
               "A discrepancy is detected for voucher 002");
-        Console.WriteLine("\n5/5 checks passed. Not an F&O integration test.");
+
+        Check(
+            VoucherDiagnostics.FindFixedDimensionMismatches("DEMF").Count == 0,
+            "DEMF must not show USMF discrepancies"
+        );
+
+        Check(
+            VoucherDiagnostics.FindFixedDimensionMismatches("USMF").Count == 1,
+            "USMF must retain its own discrepancy"
+        );
+
+        Console.WriteLine("\n7/7 checks passed. Not an F&O integration test.");
     }
 }
