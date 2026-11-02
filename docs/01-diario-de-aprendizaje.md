@@ -279,3 +279,9 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 **Interpretación:** la copia local ya ejecuta la versión de siete pruebas incorporada mediante PR #1 a main. La parte superior de la consola mantiene un error previo `git no se reconoce` por falta de git CLI en PATH, pero no afecta la ejecución .NET ni el Git GUI de Visual Studio.
 **Estado:** la actualización de código local es efectiva, LAB-TECH-02 completamente cerrado y verificado; no declarar verificado el paso exacto `Git > Pull` solamente por la salida, aunque el resultado corresponde a la versión ya fusionada en main.
 **Próxima etapa:** LAB-TECH-03 integraciones OData / HTTP GET / JSON en C# sin ERP instalado. Se utilizará una API de prueba OData v4 pública, claramente separada de F&O real; luego vincular con Data Entities, OData /data, dataAreaId, OAuth2 de F&O.
+
+
+## 02/11/2026 — LAB-TECH-03: primera consulta HTTP GET/OData comprobada
+El estudiante abrió el endpoint público `https://services.odata.org/V4/TripPinServiceRW/People?$top=3` en su navegador y compartió el **JSON completo**, con `@odata.context` y el arreglo `value` con tres personas: `russellwhyte`, `scottketchum` y `ronaldmundy`. Se observan propiedades `UserName`, `FirstName`, `LastName`, `Emails`, `AddressInfo` y metadatos `@odata.etag`. Esto confirma respuesta real de un servicio público OData de demostración (**NO Dynamics 365 Finance**).
+**Conceptos aprendidos:** HTTP GET, OData service root, entity set `People`, query option `$top=3`, JSON object/array, metadata context, ETag. **Próxima práctica pendiente:** crear un cliente C# Console App .NET 8 con `HttpClient`, `await`, `JsonDocument` y consulta `$select=UserName,FirstName,LastName`. No afirmar ejecución C# hasta recibir evidencia.
+**Conexión F&O:** Data Entities públicas en `/data`, colecciones determinadas por metadata, requieren OAuth/permisos; sintaxis y autenticación explicadas separadamente.
