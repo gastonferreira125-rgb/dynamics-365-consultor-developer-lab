@@ -184,3 +184,8 @@ select new Mismatch(header.Company, header.SubledgerVoucher,
 **Resultado laboral:** evidencia preparada para un post bilingüe LinkedIn con capturas auténticas de Visual Studio. Posicionamiento: consultor funcional ERP con aprendizaje técnico en C#/.NET/LINQ y troubleshooting; no afirmar desarrollo X++ ni conexión live a F&O.
 
 **Siguiente módulo técnico:** código C# para consultar datos desde una fuente externa/autorizada y aprender a resolver LedgerDimension; X++ únicamente cuando haya developer environment F&O.
+
+
+## 02/11/2026 — LAB-TECH-02: reproducción del error confirmada
+Captura del estudiante ejecutando en Visual Studio Developer PowerShell: `dotnet run -- --company DEMF --voucher VCH-2026-001` desde `labs/DYN-02-vouchers-csharp`.
+Resultado observado: DEMF, header RecId 2001, líneas RecId 6001 (606300 CC012 +200) y 6002 (201100 CC012 -200), balance 0.00 BALANCED. El apartado de anomalías incluye indebidamente `USMF / VCH-2026-002`, posted CC009 vs Fixed CC008. Root cause: `FindFixedDimensionMismatches()` no recibe ni filtra `company`. **Error reproducido, NO corregido todavía**. Próximo paso: pasar `company` al método y filtrar por sociedad; actualizar el call site en los tests y agregar pruebas de regresión para USMF y DEMF. Es un lab C# con datos ficticios, no F&O real.
