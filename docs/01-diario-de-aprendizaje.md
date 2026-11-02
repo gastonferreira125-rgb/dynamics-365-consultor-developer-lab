@@ -189,3 +189,9 @@ select new Mismatch(header.Company, header.SubledgerVoucher,
 ## 02/11/2026 — LAB-TECH-02: reproducción del error confirmada
 Captura del estudiante ejecutando en Visual Studio Developer PowerShell: `dotnet run -- --company DEMF --voucher VCH-2026-001` desde `labs/DYN-02-vouchers-csharp`.
 Resultado observado: DEMF, header RecId 2001, líneas RecId 6001 (606300 CC012 +200) y 6002 (201100 CC012 -200), balance 0.00 BALANCED. El apartado de anomalías incluye indebidamente `USMF / VCH-2026-002`, posted CC009 vs Fixed CC008. Root cause: `FindFixedDimensionMismatches()` no recibe ni filtra `company`. **Error reproducido, NO corregido todavía**. Próximo paso: pasar `company` al método y filtrar por sociedad; actualizar el call site en los tests y agregar pruebas de regresión para USMF y DEMF. Es un lab C# con datos ficticios, no F&O real.
+
+
+## 02/11/2026 — LAB-TECH-02: prueba funcional DEMF aprobada (C# local)
+**Captura aportada por el estudiante:** en Visual Studio Developer PowerShell, dentro del proyecto C#, se ejecutó `dotnet run -- --company DEMF --voucher VCH-2026-001` después de editar el método `FindFixedDimensionMismatches` para filtrar por sociedad.
+**Salida observada:** `Legal entity: DEMF`, header `RecId 2001`, líneas `6001/6002`, importes `+200.00/-200.00`, `Reconciliation / Balance: 0.00 (BALANCED)` y `No discrepancies in demo data.` **El reporte ya no presenta la alerta de USMF** que sí aparecía antes de la corrección. Estado: **prueba funcional DEMF pasada**, sin evidencia todavía de prueba USMF ni de regression tests finales. El código C# modificado reside en la copia local del usuario, NO se ha recibido commit/push de esos cambios a GitHub. No se probó F&O real.
+**Próximo paso:** ejecutar `dotnet run -- --company USMF --voucher VCH-2026-002` y confirmar que sigue apareciendo el mismatch CC 009 vs Fixed 008; luego ejecutar `dotnet run -- --test`, ampliar controles a 7/7 y finalmente hacer commit/push de los cambios verificados.
