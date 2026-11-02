@@ -234,3 +234,11 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 ## 02/11/2026 — LAB-TECH-02: primer commit local confirmado
 **Evidencia:** captura de Visual Studio Git Changes confirma banner `Commit b1e1ccf5 created locally`, rama `fix/company-scoped-mismatches`, indicador `1/0` (un commit local por publicar) y mensaje `There are no unstaged changes in the working directory`. Las 7 pruebas del laboratorio C# habían pasado en capturas previas.
 **Estado:** Commit LOCAL completado; **Push aún no confirmado** ni Pull Request creado. El próximo paso es usar la flecha ascendente **Push / Publish Branch** en Git Changes para publicar esta rama en GitHub, dejando `main` intacta. Después abrir un PR y verificar que los cambios se limiten a la corrección de Program.cs. No afirmar publicación remota antes de comprobarlo.
+
+## 02/11/2026 — LAB-TECH-02: Push remoto verificado y CI verde
+**Evidencia:** captura del alumno en Visual Studio Git Changes: Successfully pushed fix/company-scoped-mismatches to origin, indicador 0/0 y working tree limpio. Incluye opción Create pull request.
+**Verificación directa en GitHub:** la rama remota fix/company-scoped-mismatches existe; Program.cs incluye la llamada con argumento company, firma FindFixedDimensionMismatches(string company), filtro LINQ por sociedad, 2 controles de regresión y texto 7/7.
+**CI:** GitHub Actions completado con éxito: https://github.com/gastonferreira125-rgb/dynamics-365-consultor-developer-lab/actions/runs/41460118496
+**Comparación main...fix/company-scoped-mismatches:** 1 solo archivo modificado (labs/DYN-02-vouchers-csharp/Program.cs, +19/-6), 1 commit de corrección y 18 commits en main que la rama aún no incorpora. Esta divergencia no afecta el éxito del Push.
+**Pendiente:** alumno creará su primer Pull Request desde Create in browser; verificar base=main y compare=fix/company-scoped-mismatches, título fix: filter voucher discrepancies by legal entity. Revisar PR y checks antes de Merge.
+**Inglés:** push, feature branch, compare changes, base/head, pull request, CI checks, merge.
