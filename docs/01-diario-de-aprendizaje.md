@@ -260,3 +260,8 @@ El usuario mostró captura de **Diff - Program.cs** en Visual Studio 2026, con 6
 **Nota de alcance:** aplicación C# con datos ficticios inspirada en Finance; no hay prueba sobre Dynamics real ni desarrollo X++ ejecutado.
 **Siguiente paso local pendiente:** cambiar a la rama `main` en Visual Studio y hacer `Git > Pull` para sincronizar con remoto. Luego ejecutar `dotnet run -- --test` para volver a confirmar el estado actualizado de main. No marcar sincronización local hasta evidencia.
 **Términos EN:** merged pull request, main branch, sync, pull, regression testing, CI/CD, code review.
+
+
+## 02/11/2026 — LAB-TECH-02: pendiente sincronización local de main
+**Nueva evidencia del estudiante:** captura de Visual Studio Developer PowerShell, ejecutando `dotnet run -- --test` en la carpeta `labs/DYN-02-vouchers-csharp`. La salida muestra **Running five checks** y **5/5 checks passed**, dos veces; no aparece la versión esperada de 7 pruebas.
+**Diagnóstico:** el proyecto local que se está ejecutando aún contiene la versión original de cinco pruebas, ya sea por estar en main local desactualizada u otra rama/copia. **No inferir la rama activa de la captura de terminal.** Se verificó que `main` REMOTO de GitHub sí contiene `FindFixedDimensionMismatches(string company)` y siete pruebas (7/7). Se indicó comprobar en terminal `git branch --show-current` y `git status`; si la rama activa es `main`, ejecutar `git pull origin main`, y volver a probar `dotnet run -- --test`. Si está en feature, primero cambiar de forma segura a main. **No se confirmó aún el Pull ni los siete tests en main local.**
